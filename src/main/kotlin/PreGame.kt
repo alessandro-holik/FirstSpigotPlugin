@@ -1,24 +1,24 @@
 package main
 
 import org.bukkit.Bukkit
-import org.bukkit.Effect
 import org.bukkit.Location
 import org.bukkit.Particle
-import org.bukkit.block.data.type.Bed
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.entity.EntityDamageEvent
+import org.bukkit.event.entity.EntityExplodeEvent
 import org.bukkit.event.player.*
 import java.util.*
-import java.util.logging.Handler
 import kotlin.math.PI
 import kotlin.math.cos
 import kotlin.math.sin
+
 
 object GameState {
     var isRunning : Boolean = false
     var playerCount : Int = 0
     var timer : Int = 30
+    var a = arrayListOf<Int>()
 
     fun timer() {
         Bukkit.getScheduler().runTaskTimer(Loader.instance!!, Runnable {
@@ -54,8 +54,11 @@ class PreGame : Listener {
         GameState.playerCount++
 
         //lavaParticles(e)
-        cloudParticles(e)
+        //cloudParticles(e)
+        jesusParticles(e)
     }
+
+
 
     fun cloudParticles(e : PlayerJoinEvent) {
 
@@ -91,17 +94,52 @@ class PreGame : Listener {
         },0 ,1)
     }
 
+    fun jesusParticles(e : PlayerJoinEvent) {
+
+        var arc : Double = 0.0
+        var loc = e.player.location
+
+        var first : Location = e.player.location
+        var second : Location = e.player.location
+        var third : Location = e.player.location
+        var fourth : Location = e.player.location
+
+        Bukkit.getScheduler().scheduleSyncRepeatingTask(Loader.instance!!, Runnable {
+            arc += PI / 16
+            loc = e.player.location
+            first = loc.clone().add(cos(arc)*0.4,   2.7, 0.4*sin(arc))
+            second = loc.clone().add(cos(arc + PI*1/2)*0.4,   2.7, 0.4*sin(arc + PI*1/2))
+            third = loc.clone().add(cos(arc + PI)*0.4,   2.7, 0.4*sin(arc + PI))
+            fourth = loc.clone().add(cos(arc + PI*3/2)*0.4,   2.7, 0.4*sin(arc + PI*3/2))
+            e.player.world.spawnParticle(Particle.CRIT, first, 0)
+            e.player.world.spawnParticle(Particle.CRIT, second, 0)
+            e.player.world.spawnParticle(Particle.CRIT, third, 0)
+            e.player.world.spawnParticle(Particle.CRIT, fourth, 0)
+
+        },0 ,1)
+    }
+
+    @EventHandler
+    fun onRunParticles(e : PlayerMoveEvent) {
+        val r : Random = Random()
+
+        for (i in 0..4) {
+            e.player.world.spawnParticle(Particle.CRIT_MAGIC, e.player.location.add(r.nextDouble()*0.5, r.nextDouble()*0.5, r.nextDouble()*0.5), 0)
+            e.player.world.spawnParticle(Particle.CRIT_MAGIC, e.player.location.add(-r.nextDouble()*0.5, r.nextDouble()*0.5, -r.nextDouble()*0.5), 0)
+        }
+    }
+
     @EventHandler
     fun onPlayerQuit(e : PlayerQuitEvent) = GameState.playerCount--
 
     @EventHandler
     fun onPlayerInteract(e : PlayerInteractEvent) {
-        if(!GameState.isRunning) e.isCancelled = true
+        if(!GameState.isRunning) e.isCancelled = false
     }
 
     @EventHandler
     fun playerAttackEvent(e : EntityDamageEvent) {
-        if(!GameState.isRunning) e.isCancelled = true
+        if(!GameState.isRunning) e.isCancelled = false
     }
 
 }

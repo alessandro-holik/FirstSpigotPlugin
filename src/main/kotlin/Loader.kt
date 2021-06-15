@@ -1,16 +1,23 @@
 package main
 
-import org.bukkit.event.Listener
+import org.bukkit.Bukkit
 import org.bukkit.plugin.java.JavaPlugin
 
-public class Loader : JavaPlugin(), Listener{
 
-    override fun onEnable() {
-        super.onEnable()
-        println("Hello World!")
+class Loader : JavaPlugin() {
+
+    companion object {
+        var instance : Loader? = null
     }
 
-    override fun onDisable() {
-        super.onDisable()
+
+
+    override fun onEnable() {
+        instance = this
+
+        // Setup PreGame behavior
+        Bukkit.getPluginManager().registerEvents(PreGame(), this)
+        this.getCommand("adisguise")?.setExecutor(DisguiseCommand())
+
     }
 }

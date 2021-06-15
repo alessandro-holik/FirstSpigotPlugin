@@ -1,7 +1,7 @@
 plugins {
     id 'java'
     id 'org.jetbrains.kotlin.jvm' version '1.5.0'
-    id 'com.github.johnrengelman.shadow' version '7.0.0'
+    id 'com.github.johnrengelman.shadow' version '2.0.4'
 }
 
 group 'me.h0llix'
@@ -11,24 +11,22 @@ repositories {
     mavenCentral()
     maven {
         url = 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/'
+
+        // As of Gradle 5.1, you can limit this to only those
+        // dependencies you expect from it
         content {
             includeGroup 'org.bukkit'
             includeGroup 'org.spigotmc'
         }
     }
-    maven {
-        url = 'https://oss.sonatype.org/content/repositories/snapshots'
-    }
+    maven { url = 'https://jitpack.io' }
+    maven { url = 'https://oss.sonatype.org/content/repositories/snapshots' }
+    maven { url = 'https://oss.sonatype.org/content/repositories/central' }
 }
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib"
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.0'
-
     compileOnly 'org.spigotmc:spigot-api:1.16.5-R0.1-SNAPSHOT'
-}
-
-test {
-    useJUnitPlatform()
+    //implementation 'com.github.libraryaddict:LibsDisguises:10.0.25'
+    shadow 'com.github.libraryaddict:LibsDisguises:10.0.25'
 }
