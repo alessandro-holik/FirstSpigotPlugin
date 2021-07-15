@@ -1,4 +1,8 @@
-name:
+name: FirstSpigotPlugin
 version: 1.0.0
 main: main.Loader
 description: First Plugin!
+commands:
+  adisguise:
+    usage: /adisguise
+    description: Command to disguise!

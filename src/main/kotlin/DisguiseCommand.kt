@@ -33,7 +33,7 @@ class DisguiseCommand : CommandExecutor {
 
         } else if (args[0].equals("block", ignoreCase = true)) {
             try {
-                val m : Material = Material.valueOf("DIRT")
+                val m : Material = Material.valueOf(args[1].uppercase())
 
                 DisguiseAPI.disguiseToAll(p, MiscDisguise(DisguiseType.FALLING_BLOCK, m.id))
                 p.sendMessage("You disguised as ${m.name}!")

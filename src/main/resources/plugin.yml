@@ -2,8 +2,6 @@ name: FirstSpigotPlugin
 version: 1.0.0
 main: main.Loader
 description: First Plugin!
-depend:
-  - LibsDisguises
 commands:
   adisguise:
     usage: /adisguise
